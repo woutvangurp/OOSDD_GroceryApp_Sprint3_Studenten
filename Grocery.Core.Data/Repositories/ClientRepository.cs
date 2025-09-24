@@ -2,14 +2,11 @@
 using Grocery.Core.Interfaces.Repositories;
 using Grocery.Core.Models;
 
-namespace Grocery.Core.Data.Repositories
-{
-    public class ClientRepository : IClientRepository
-    {
+namespace Grocery.Core.Data.Repositories {
+    public class ClientRepository : IClientRepository {
         private readonly List<Client> clientList;
 
-        public ClientRepository()
-        {
+        public ClientRepository() {
             clientList = [
                 new Client(1, "M.J. Curie", "user1@mail.com", "IunRhDKa+fWo8+4/Qfj7Pg==.kDxZnUQHCZun6gLIE6d9oeULLRIuRmxmH2QKJv2IM08="),
                 new Client(2, "H.H. Hermans", "user2@mail.com", "dOk+X+wt+MA9uIniRGKDFg==.QLvy72hdG8nWj1FyL75KoKeu4DUgu5B/HAHqTD2UFLU="),
@@ -25,6 +22,12 @@ namespace Grocery.Core.Data.Repositories
         public Client? Get(int id) {
             Client? getClient = clientList.FirstOrDefault(c => c.Id == id);
             return getClient ?? null;
+        }
+
+        public Client Create(Client newClient) {
+            newClient.Id = clientList.Max(c => c.Id) + 1;
+            clientList.Add(newClient);
+            return Get(newClient.Id) ?? newClient;
         }
 
         public List<Client> GetAll() => clientList;
